@@ -11,10 +11,12 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (request, response) => {
+  response.header('Content-Type: text/plain');
   response.send("OK");
 });
 
 app.get("/forecast", (request, response) => {
+  res.header('Content-Type: application/json');
   const options = {
     uri: process.env.FORECAST_URI,
     qs: {
@@ -25,7 +27,6 @@ app.get("/forecast", (request, response) => {
   }
   console.log(options);
   request.get(options).then(result => {
-    response.write(result);
   });
 })
 
