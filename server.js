@@ -2,11 +2,6 @@ const express = require('express')
 const request = require('request')
 const app = express()
 
-app.get("/", (request, response) => {
-  response.setHeader('Content-Type: text/plain');
-  response.send("OK");
-});
-
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -15,13 +10,19 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (request, response) => {
+  response.setHeader('Content-Type: text/plain');
+  response.send("OK");
+});
 
 app.get("/forecast", (request, response) => {
-  request.get({
-    uri: process.env.FORECAST_API,
-    qs: {
-      q: "dracut,us"
-    }
-  });
+  response.write(
+    request.get({
+      uri: process.env.FORECAST_API,
+      qs: {
+        q: "dracut,us"
+      }
+    })
+  );
 })
 
