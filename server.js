@@ -15,19 +15,26 @@ app.get("/", (request, response) => {
   response.send("OK");
 });
 
-app.get("/forecast", (req, response) => {
-  response.header('Content-Type: application/json');
-  const options = {
+app.get("/forecast", (req, res) => {
+  res.header('Content-Type: application/json');
+  console.log(req);
+  request.get({
     uri: process.env.FORECAST_URI,
     qs: {q: "dracut,us", appid: process.env.API_KEY},
     json: true
-  }
-  console.log(options);
-  request.get(options)
-    .then(result => {
-      
+  })
+  .then(result => {
+    res.send({
+      status: "OK",
+      data: result
+    });
+  })
+  .catch(err => {
+    res.send({
+      status: "ERROR",
+      error: err
     })
-    .catch(console.error);
+  });
 })
 
 app.listen(process.env.PORT);
