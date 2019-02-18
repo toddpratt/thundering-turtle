@@ -10,10 +10,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (request, response) => {
-  response.header('Content-Type: text/plain');
-  response.send("OK");
-});
+app.use(express.static('/ui/build/'))
 
 app.get("/forecast", (req, res) => {
   res.header('Content-Type: application/json');
