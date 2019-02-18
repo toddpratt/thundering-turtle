@@ -11,20 +11,20 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (request, response) => {
-  response.setHeader('Content-Type: text/plain');
   response.send("OK");
 });
 
 app.get("/forecast", (request, response) => {
-  request.get({
-    uri: process.env.FORECAST_API,
+  const options = {
+    uri: process.env.FORECAST_URI,
     qs: {
       q: "dracut,us",
       appid: process.env.API_KEY
     },
     json: true
-    
-  }).then(result => {
+  }
+  console.log(options);
+  request.get(options).then(result => {
     response.write(result);
   });
 })
