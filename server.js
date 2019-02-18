@@ -19,7 +19,8 @@ app.get("/forecast", (request, response) => {
   request.get({
     uri: process.env.FORECAST_API,
     qs: {
-      q: "dracut,us"
+      q: "dracut,us",
+      appid: process.env.API_KEY
     },
     json: true
     
