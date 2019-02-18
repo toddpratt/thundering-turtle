@@ -1,5 +1,5 @@
 const express = require('express')
-const request = require('request')
+const request = require('request-promise-native')
 const app = express()
 
 app.use(express.json());
@@ -16,13 +16,15 @@ app.get("/", (request, response) => {
 });
 
 app.get("/forecast", (request, response) => {
-  response.write(
-    request.get({
-      uri: process.env.FORECAST_API,
-      qs: {
-        q: "dracut,us"
-      }
-    })
-  );
+  request({
+    uri: process.env.FORECAST_API,
+    qs: {
+      q: "dracut,us"
+    }
+    
+  }).then(result => {
+    response.write(result);
+  });
 })
 
+app.listen(process.env.PORT);
