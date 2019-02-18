@@ -1,6 +1,6 @@
-const express = require('express')
-const request = require('request-promise-native')
-const app = express()
+const express = require('express');
+const request = require('request-promise-native');
+const app = express();
 
 app.use(express.json());
 
@@ -15,19 +15,19 @@ app.get("/", (request, response) => {
   response.send("OK");
 });
 
-app.get("/forecast", (request, response) => {
-  res.header('Content-Type: application/json');
+app.get("/forecast", (req, response) => {
+  response.header('Content-Type: application/json');
   const options = {
     uri: process.env.FORECAST_URI,
-    qs: {
-      q: "dracut,us",
-      appid: process.env.API_KEY
-    },
+    qs: {q: "dracut,us", appid: process.env.API_KEY},
     json: true
   }
   console.log(options);
-  request.get(options).then(result => {
-  });
+  request.get(options)
+    .then(result => {
+      
+    })
+    .catch(console.error);
 })
 
 app.listen(process.env.PORT);
