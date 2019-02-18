@@ -3,6 +3,7 @@
 
 // init project
 const express = require('express')
+const request = require('request')
 const app = express()
 
 // we've started you off with Express, 
@@ -24,7 +25,6 @@ const dreams = [
 ]
 
 app.get("/dreams", (request, response) => {
-  response.send(dreams)
 })
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
