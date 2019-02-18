@@ -16,11 +16,12 @@ app.get("/", (request, response) => {
 });
 
 app.get("/forecast", (request, response) => {
-  request({
+  request.get({
     uri: process.env.FORECAST_API,
     qs: {
       q: "dracut,us"
-    }
+    },
+    json: true
     
   }).then(result => {
     response.write(result);
