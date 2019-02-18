@@ -17,10 +17,9 @@ app.get("/", (request, response) => {
 
 app.get("/forecast", (req, res) => {
   res.header('Content-Type: application/json');
-  console.log(req);
   request.get({
     uri: process.env.FORECAST_URI,
-    qs: {q: "dracut,us", appid: process.env.API_KEY},
+    qs: {q: req.query.city, appid: process.env.API_KEY},
     json: true
   })
   .then(result => {
