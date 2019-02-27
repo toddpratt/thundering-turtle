@@ -1,8 +1,6 @@
-body {
-  padding-top: 2em;
-  padding-bottom: 3em;
-  padding-left: 10em;
-  padding-right: 10em;
+
+div.charts > div {
+  display: inline-block;
 }
 
 .App {

@@ -6,6 +6,14 @@ import ReactChartkick, { LineChart } from 'react-chartkick'
 import Chart from 'chart.js'
 
 
+const NotReadyYet = props => {
+    return (
+        <Jumbotron className="page-header panel panel-default">
+            <h2>Fetching Data...</h2>
+        </Jumbotron>
+    );
+}
+
 class Banner extends Component {
     constructor(props) {
         super(props);
@@ -50,16 +58,22 @@ class BaseChart extends Component {
 
 }
 
+const ChartPanel = props => (
+    <div className="panel panel-default chart-container">
+        <div className="panel-heading"><h3>Temperature</h3></div>
+        <div className="panel-body">
+            {props.children}
+        </div>
+    </div>
+);
+
 class TemperatureChart extends BaseChart {
     render() {
         return (
-            <div className="panel panel-default chart-container">
-                <div className="panel-heading"><h3>Temperature</h3></div>
-                <div className="panel-body">
-                    <LineChart data={this.getData()}
-                        height="600px" min={null} suffix="&#x2109;" />
-                </div>
-            </div>
+            <ChartPanel>
+                <LineChart data={this.getData()}
+                    height="600px" min={null} suffix="&#x2109;" />
+            </ChartPanel>
         );
     }
 
@@ -71,13 +85,10 @@ class TemperatureChart extends BaseChart {
 class HumidityChart extends BaseChart {
     render() {
         return (
-            <div className="panel panel-default chart-container">
-                <div className="panel-heading"><h3>Humidity</h3></div>
-                <div className="panel-body">
-                    <LineChart data={this.getData()}
-                        height="600px" min={null} suffix="%" />
-                </div>
-            </div>
+            <ChartPanel>
+                <LineChart data={this.getData()}
+                    height="600px" min={null} suffix="%" />
+            </ChartPanel>
         );
     }
 
@@ -89,13 +100,10 @@ class HumidityChart extends BaseChart {
 class WindSpeedChart extends BaseChart {
     render() {
         return (
-            <div className="panel panel-default chart-container">
-                <div className="panel-heading"><h3>Wind Speed</h3></div>
-                <div className="panel-body">
-                    <LineChart data={this.getData()}
-                        height="600px" min={null} suffix="MPH" />
-                </div>
-            </div>
+            <ChartPanel>
+                <LineChart data={this.getData()}
+                    height="600px" min={null} suffix="MPH" />
+            </ChartPanel>
         );
     }
 
@@ -103,7 +111,6 @@ class WindSpeedChart extends BaseChart {
         return val.wind.speed;
     }
 }
-
 
 class App extends Component {
     constructor(props) {
@@ -129,14 +136,20 @@ class App extends Component {
     }
 
     render() {
-        return (
-            <div className="App">
-                <Banner data={this.state.forecast} />
-                <TemperatureChart data={this.state.forecast} />
-                <HumidityChart data={this.state.forecast} />
-                <WindSpeedChart data={this.state.forecast} />
-            </div>
-        );
+        if (this.state.forecast) {
+            return (
+                <div className="container">
+                    <div className="App col-md12">
+                        <Banner data={this.state.forecast} />
+                        <TemperatureChart data={this.state.forecast} />
+                        <HumidityChart data={this.state.forecast} />
+                        <WindSpeedChart data={this.state.forecast} />
+                    </div>
+                </div>
+            );
+        } else {
+            return <NotReadyYet />
+        }
     }
 }
 
