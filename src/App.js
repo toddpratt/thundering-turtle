@@ -6,20 +6,32 @@ import ReactChartkick, { LineChart } from 'react-chartkick'
 import Chart from 'chart.js'
 
 
-const Banner = props => (
-    <Jumbotron className="page-header panel panel-default">
-        <h2>Dracut Weather</h2>
-    </Jumbotron>
-);
+class Banner extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    render() {
+        var bannerText = "Weather: New York...";
+
+        if (this.props.data) {
+            bannerText = "Weather: " + this.props.data.city.name;
+        };
+
+        console.log(this.props);
+        return (
+            <Jumbotron className="page-header panel panel-default">
+                <h2>{bannerText}</h2>
+            </Jumbotron>
+        );
+    }
+}
 
 class BaseChart extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
-    }
-
-    getValue(val) {
+        this.state = {};
     }
 
     getData() {
@@ -41,10 +53,12 @@ class BaseChart extends Component {
 class TemperatureChart extends BaseChart {
     render() {
         return (
-            <div>
-                <div>Temperature</div>
-                <LineChart data={this.getData()}
-                    height="600px" min={null} suffix="&#x2109;" />
+            <div className="panel panel-default chart-container">
+                <div className="panel-heading"><h3>Temperature</h3></div>
+                <div className="panel-body">
+                    <LineChart data={this.getData()}
+                        height="600px" min={null} suffix="&#x2109;" />
+                </div>
             </div>
         );
     }
@@ -57,10 +71,12 @@ class TemperatureChart extends BaseChart {
 class HumidityChart extends BaseChart {
     render() {
         return (
-            <div>
-                <div>Humidity</div>
-                <LineChart data={this.getData()}
-                    height="600px" min={null} suffix="%" />
+            <div className="panel panel-default chart-container">
+                <div className="panel-heading"><h3>Humidity</h3></div>
+                <div className="panel-body">
+                    <LineChart data={this.getData()}
+                        height="600px" min={null} suffix="%" />
+                </div>
             </div>
         );
     }
@@ -73,10 +89,12 @@ class HumidityChart extends BaseChart {
 class WindSpeedChart extends BaseChart {
     render() {
         return (
-            <div>
-                <div>Wind Speed</div>
-                <LineChart data={this.getData()}
-                    height="600px" min={null} suffix="MPH" />
+            <div className="panel panel-default chart-container">
+                <div className="panel-heading"><h3>Wind Speed</h3></div>
+                <div className="panel-body">
+                    <LineChart data={this.getData()}
+                        height="600px" min={null} suffix="MPH" />
+                </div>
             </div>
         );
     }
@@ -91,11 +109,11 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        setInterval(this.updateForecast, 10000)
+        this.updateForecast = this.updateForecast.bind(this);
     }
 
     updateForecast() {
-        fetch("https://thundering-turtle.glitch.me/forecast?city=Dracut,ma,us")
+        fetch("https://thundering-turtle.glitch.me/forecast?city=New+York,ny,us")
             .then(res => res.json())
             .then(json => {
                 this.setState({
@@ -107,12 +125,13 @@ class App extends Component {
 
     componentDidMount() {
         this.updateForecast();
+        setInterval(this.updateForecast, 300000)
     }
 
     render() {
         return (
             <div className="App">
-                <Banner />
+                <Banner data={this.state.forecast} />
                 <TemperatureChart data={this.state.forecast} />
                 <HumidityChart data={this.state.forecast} />
                 <WindSpeedChart data={this.state.forecast} />
