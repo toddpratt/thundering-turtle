@@ -10,7 +10,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('/ui/build/'))
+app.use(express.static('/build/'))
 
 app.get("/forecast", (req, res) => {
   res.header('Content-Type: application/json');
